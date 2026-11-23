@@ -1,0 +1,10 @@
+{
+  "name": "Río Victoria",
+  "short_name": "Río Victoria",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#eef4f6",
+  "theme_color": "#123b56",
+  "description": "Consulta de alturas hidrométricas del río en Victoria, Entre Ríos.",
+  "icons": []
+}

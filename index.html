@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#123b56">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Río Victoria</title>
+<style>
+:root{--navy:#123b56;--blue:#176b87;--bg:#eef4f6;--ink:#173042;--muted:#5d7481}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:var(--ink)}
+header{background:linear-gradient(140deg,#123b56,#176b87);color:white;padding:26px 20px 22px;border-radius:0 0 24px 24px}
+h1{font-size:25px;margin:0 0 5px}header p{margin:0;color:#d6e9ef;font-size:14px}
+main{max-width:720px;margin:auto;padding:16px}
+.card{background:white;border-radius:18px;padding:17px;margin:0 0 14px;box-shadow:0 3px 14px #16384b12}
+h2{font-size:17px;margin:0 0 8px}.muted{color:var(--muted);font-size:13px;line-height:1.45}
+.actions{display:grid;gap:10px;margin-top:13px}
+a.btn{display:block;text-align:center;text-decoration:none;padding:14px 16px;border-radius:12px;background:var(--navy);color:white;font-weight:650}
+a.secondary{background:#e2edf1;color:var(--navy)}
+iframe{width:100%;height:570px;border:0;border-radius:12px;background:#f4f7f8}
+.note{font-size:12px;color:var(--muted);line-height:1.5}
+footer{text-align:center;padding:8px 12px 28px;color:var(--muted);font-size:12px}
+</style>
+</head>
+<body>
+<header>
+<h1>🌊 Río Victoria</h1>
+<p>Altura del río · Victoria, Entre Ríos</p>
+</header>
+<main>
+<section class="card">
+<h2>Consulta de la medición</h2>
+<p class="muted">La altura y el horario corresponden a la última lectura publicada por la fuente. La pantalla no inventa ni interpola mediciones.</p>
+<div class="actions">
+<a class="btn" href="https://alerta.ina.gob.ar/" target="_blank" rel="noopener">Consultar datos del INA</a>
+<a class="btn secondary" href="https://rioalert.com.ar/puertos/victoria" target="_blank" rel="noopener">Ver estación Victoria en RíoAlert</a>
+<a class="btn secondary" href="https://www.hidraulica.gob.ar/" target="_blank" rel="noopener">Hidráulica de Entre Ríos</a>
+</div>
+</section>
+<section class="card">
+<h2>Vista rápida · RíoAlert</h2>
+<iframe src="https://rioalert.com.ar/puertos/victoria" title="Última altura publicada para Victoria" loading="lazy"></iframe>
+<p class="note">Si la vista no carga dentro de la aplicación, tocá “Ver estación Victoria en RíoAlert”. La fecha y hora de medición se muestran en la fuente.</p>
+</section>
+<section class="card">
+<h2>Importante</h2>
+<p class="muted">Los organismos pueden publicar datos con distintas frecuencias y las escalas o cotas pueden variar según la estación. Para evacuaciones, seguí siempre las indicaciones de Defensa Civil, Prefectura y autoridades locales. Esta app es informativa y no reemplaza alertas oficiales.</p>
+</section>
+</main>
+<footer>Río Victoria · Acceso rápido a fuentes hidrológicas</footer>
+<script>
+if ('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+</script>
+</body>
+</html>

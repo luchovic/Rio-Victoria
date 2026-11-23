@@ -1,0 +1,21 @@
+RIO VICTORIA — APP ANDROID (PWA)
+
+Esta es una aplicación web instalable. Para que Android permita instalarla como app, debe publicarse en un hosting HTTPS (por ejemplo GitHub Pages).
+
+Archivos:
+- index.html: pantalla principal
+- manifest.webmanifest: datos de instalación
+- sw.js: caché básica para abrir la app
+
+Fuentes enlazadas:
+- INA: https://alerta.ina.gob.ar/
+- RíoAlert Victoria: https://rioalert.com.ar/puertos/victoria
+- Hidráulica Entre Ríos: https://www.hidraulica.gob.ar/
+
+IMPORTANTE:
+La app enlaza y muestra la fuente RíoAlert, y permite abrir INA. No realiza mediciones propias ni garantiza actualizaciones cada 3 horas. La fecha/hora de cada lectura debe verificarse en la fuente. Para emergencias y evacuación, seguir a Defensa Civil y Prefectura.
+
+Instalación una vez publicada:
+1. Abrir la dirección HTTPS en Chrome en Android.
+2. Tocar ⋮ > Instalar aplicación (o Añadir a pantalla principal).
+3. Confirmar. Aparecerá el ícono Río Victoria.
