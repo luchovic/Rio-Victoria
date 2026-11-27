@@ -4,52 +4,66 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#123b56">
-<link rel="manifest" href="manifest.webmanifest">
+<link rel="manifest" href="./manifest.webmanifest">
 <title>Río Victoria</title>
 <style>
-:root{--navy:#123b56;--blue:#176b87;--bg:#eef4f6;--ink:#173042;--muted:#5d7481}
+:root{--navy:#123b56;--blue:#176b87;--bg:#eef4f6;--ink:#173042;--muted:#5d7481;--line:#dce7eb;--green:#18794e;--yellow:#9a6700;--red:#b42318}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:var(--ink)}
-header{background:linear-gradient(140deg,#123b56,#176b87);color:white;padding:26px 20px 22px;border-radius:0 0 24px 24px}
-h1{font-size:25px;margin:0 0 5px}header p{margin:0;color:#d6e9ef;font-size:14px}
-main{max-width:720px;margin:auto;padding:16px}
-.card{background:white;border-radius:18px;padding:17px;margin:0 0 14px;box-shadow:0 3px 14px #16384b12}
-h2{font-size:17px;margin:0 0 8px}.muted{color:var(--muted);font-size:13px;line-height:1.45}
-.actions{display:grid;gap:10px;margin-top:13px}
-a.btn{display:block;text-align:center;text-decoration:none;padding:14px 16px;border-radius:12px;background:var(--navy);color:white;font-weight:650}
-a.secondary{background:#e2edf1;color:var(--navy)}
-iframe{width:100%;height:570px;border:0;border-radius:12px;background:#f4f7f8}
-.note{font-size:12px;color:var(--muted);line-height:1.5}
-footer{text-align:center;padding:8px 12px 28px;color:var(--muted);font-size:12px}
+header{background:linear-gradient(140deg,#123b56,#176b87);color:white;padding:25px 20px 22px;border-radius:0 0 24px 24px}h1{font-size:25px;margin:0 0 5px}header p{margin:0;color:#d6e9ef;font-size:14px}
+main{max-width:720px;margin:auto;padding:16px}.card{background:white;border-radius:18px;padding:17px;margin:0 0 14px;box-shadow:0 3px 14px #16384b12}h2{font-size:17px;margin:0 0 10px}.muted{color:var(--muted);font-size:13px;line-height:1.45}
+.reading{font-size:48px;font-weight:750;letter-spacing:-2px;line-height:1.1;margin:8px 0}.unit{font-size:18px;font-weight:600;letter-spacing:0}.status{display:inline-block;padding:7px 12px;border-radius:99px;font-size:13px;font-weight:700;background:#edf2f4;color:#435563}.status.normal{background:#e8f5ee;color:var(--green)}.status.alerta{background:#fff4d6;color:var(--yellow)}.status.evacuacion{background:#feeceb;color:var(--red)}
+button,.btn{border:0;display:block;width:100%;text-align:center;text-decoration:none;padding:14px 16px;border-radius:12px;background:var(--navy);color:white;font-weight:650;font-size:15px;cursor:pointer}.secondary{background:#e2edf1;color:var(--navy)}.actions{display:grid;gap:10px;margin-top:13px}.note{font-size:12px;color:var(--muted);line-height:1.5}.error{color:#9b2c24;background:#fff0ee;padding:11px;border-radius:10px;font-size:13px;line-height:1.4}.loading{color:var(--muted);font-size:14px}table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:10px 5px;border-bottom:1px solid var(--line)}th{color:var(--muted);font-weight:600}td:last-child,th:last-child{text-align:right}.hidden{display:none}footer{text-align:center;padding:8px 12px 28px;color:var(--muted);font-size:12px}
 </style>
 </head>
 <body>
-<header>
-<h1>🌊 Río Victoria</h1>
-<p>Altura del río · Victoria, Entre Ríos</p>
-</header>
+<header><h1>🌊 Río Victoria</h1><p>Altura del río · Victoria, Entre Ríos</p></header>
 <main>
 <section class="card">
-<h2>Consulta de la medición</h2>
-<p class="muted">La altura y el horario corresponden a la última lectura publicada por la fuente. La pantalla no inventa ni interpola mediciones.</p>
-<div class="actions">
-<a class="btn" href="https://alerta.ina.gob.ar/" target="_blank" rel="noopener">Consultar datos del INA</a>
-<a class="btn secondary" href="https://rioalert.com.ar/puertos/victoria" target="_blank" rel="noopener">Ver estación Victoria en RíoAlert</a>
-<a class="btn secondary" href="https://www.hidraulica.gob.ar/" target="_blank" rel="noopener">Hidráulica de Entre Ríos</a>
+<h2>Última medición oficial disponible</h2>
+<div id="loading" class="loading">Consultando datos del INA…</div>
+<div id="readingBox" class="hidden">
+<div class="reading"><span id="height">—</span><span class="unit"> m</span></div>
+<span id="status" class="status">Sin datos</span>
+<p id="measuredAt" class="muted"></p>
+<p id="source" class="note">Fuente: INA · Serie 32 · Estación Victoria – Prefectura Naval Argentina</p>
 </div>
+<div id="error" class="error hidden"></div>
+<div class="actions"><button id="refresh">Actualizar medición</button><a class="btn secondary" id="official" href="https://alerta.ina.gov.ar/a5/secciones" target="_blank" rel="noopener">Abrir visor oficial del INA</a></div>
+<p class="note">La aplicación muestra únicamente observaciones publicadas por la fuente. No estima ni interpola alturas.</p>
 </section>
-<section class="card">
-<h2>Vista rápida · RíoAlert</h2>
-<iframe src="https://rioalert.com.ar/puertos/victoria" title="Última altura publicada para Victoria" loading="lazy"></iframe>
-<p class="note">Si la vista no carga dentro de la aplicación, tocá “Ver estación Victoria en RíoAlert”. La fecha y hora de medición se muestran en la fuente.</p>
-</section>
-<section class="card">
-<h2>Importante</h2>
-<p class="muted">Los organismos pueden publicar datos con distintas frecuencias y las escalas o cotas pueden variar según la estación. Para evacuaciones, seguí siempre las indicaciones de Defensa Civil, Prefectura y autoridades locales. Esta app es informativa y no reemplaza alertas oficiales.</p>
-</section>
+<section class="card"><h2>Mediciones recientes</h2><div id="tableWrap" class="muted">Esperando datos…</div></section>
+<section class="card"><h2>Niveles de referencia</h2>
+<p><span class="status normal">Debajo de alerta</span> Menos de 4,60 m</p>
+<p><span class="status alerta">Alerta</span> Desde 4,60 m</p>
+<p><span class="status evacuacion">Evacuación</span> Desde 5,90 m</p>
+<p class="note">Los niveles son referencias informativas. Seguí siempre las indicaciones de Prefectura, Defensa Civil y autoridades locales.</p></section>
 </main>
-<footer>Río Victoria · Acceso rápido a fuentes hidrológicas</footer>
+<footer>Río Victoria · Datos hidrológicos oficiales</footer>
 <script>
-if ('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+const API='https://alerta.ina.gov.ar/a5/obs/puntual/series/32/observaciones';
+const $=id=>document.getElementById(id);
+function pick(o,keys){for(const k of keys){if(o&&o[k]!==undefined&&o[k]!==null&&o[k]!=='')return o[k]}return null}
+function parseRows(data){if(Array.isArray(data))return data;if(data&&Array.isArray(data.observaciones))return data.observaciones;if(data&&Array.isArray(data.rows))return data.rows;if(data&&Array.isArray(data.data))return data.data;return []}
+function parseDate(o){return pick(o,['timestart','fecha','time','timestamp','fecha_hora','timeupdate','date','datetime'])}
+function parseValue(o){const v=pick(o,['valor','value','nivel','altura','observacion','result']);if(typeof v==='number')return v;if(typeof v==='string'){const n=Number(v.replace(',','.'));return Number.isFinite(n)?n:null}return null}
+function fmtDate(v){if(!v)return 'Fecha no informada';const d=new Date(v);return Number.isNaN(d.getTime())?String(v):d.toLocaleString('es-AR',{dateStyle:'medium',timeStyle:'short'})}
+function showError(msg){$('loading').classList.add('hidden');$('error').textContent=msg;$('error').classList.remove('hidden')}
+function setStatus(v){const el=$('status');el.className='status';if(v>=5.9){el.textContent='Nivel de evacuación';el.classList.add('evacuacion')}else if(v>=4.6){el.textContent='Nivel de alerta';el.classList.add('alerta')}else{el.textContent='Debajo del nivel de alerta';el.classList.add('normal')}}
+async function loadData(){
+ $('refresh').disabled=true;$('refresh').textContent='Actualizando…';$('error').classList.add('hidden');$('loading').classList.remove('hidden');$('loading').textContent='Consultando datos del INA…';
+ try{
+  const end=new Date(),start=new Date(end.getTime()-14*86400000);
+  const p=new URLSearchParams({timestart:start.toISOString().slice(0,10),timeend:end.toISOString().slice(0,10)});
+  const response=await fetch(API+'?'+p.toString(),{method:'GET',headers:{'Accept':'application/json'},cache:'no-store'});
+  if(!response.ok)throw new Error('El INA respondió con estado HTTP '+response.status+'.');
+  const data=await response.json();const rows=parseRows(data).map(o=>({raw:o,date:parseDate(o),value:parseValue(o)})).filter(x=>x.value!==null).sort((a,b)=>new Date(b.date||0)-new Date(a.date||0));
+  if(!rows.length)throw new Error('La consulta respondió, pero no se encontraron mediciones válidas en los últimos 14 días. Revisaremos la serie y el formato de respuesta.');
+  const latest=rows[0];$('height').textContent=latest.value.toFixed(2).replace('.',',');setStatus(latest.value);$('measuredAt').textContent='Fecha y hora de medición: '+fmtDate(latest.date);$('readingBox').classList.remove('hidden');$('loading').classList.add('hidden');
+  $('tableWrap').innerHTML='<table><thead><tr><th>Fecha y hora</th><th>Altura</th></tr></thead><tbody>'+rows.slice(0,10).map(x=>'<tr><td>'+fmtDate(x.date)+'</td><td><strong>'+x.value.toFixed(2).replace('.',',')+' m</strong></td></tr>').join('')+'</tbody></table>';
+ }catch(e){$('loading').classList.add('hidden');$('readingBox').classList.add('hidden');showError('No se pudo conectar directamente con la API del INA. '+(e instanceof TypeError?'Puede tratarse de una restricción CORS del servidor. ':'')+e.message+'\nUsá el botón “Abrir visor oficial del INA” para consultar la fuente.');$('tableWrap').textContent='Sin datos disponibles.'}
+ finally{$('refresh').disabled=false;$('refresh').textContent='Actualizar medición'}
+}
+$('refresh').addEventListener('click',loadData);loadData();
+if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 </script>
-</body>
-</html>
+</body></html>
